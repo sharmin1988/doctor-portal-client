@@ -9,12 +9,15 @@ const SignUp = () => {
     const { createUser, updateUser } = useContext(AuthContext);
     const [signUpError, setSignUPError] = useState('')
     const handleSignUp = (data) => {
+
         console.log(data);
         setSignUPError('');
+
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
+                
                 toast('User Created Successfully.')
                 const userInfo = {
                     displayName: data.name
@@ -53,7 +56,7 @@ const SignUp = () => {
                         <input type="password" {...register("password", {
                             required: "Password is required",
                             minLength: { value: 6, message: "Password must be 6 characters long" },
-                            pattern: { value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/, message: 'Password must have uppercase, number and special characters' }
+                            // pattern: { value: /(?=.*[A-Z])(?=.*[!@#$&*])(?=.*[0-9])/, message: 'Password must have uppercase, number and special characters' }
                         })} className="input input-bordered w-full max-w-xs" />
                         {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
                     </div>
