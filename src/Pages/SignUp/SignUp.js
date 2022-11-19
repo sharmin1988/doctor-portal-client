@@ -1,36 +1,64 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthProvider';
+import useToken from "../../hooks/useToken";
+
 
 const SignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { createUser, updateUser } = useContext(AuthContext);
     const [signUpError, setSignUPError] = useState('')
-    const handleSignUp = (data) => {
+    const [createdUser, setCreatedUser] = useState('')
+    const [token] = useToken(createdUser)
+    const navigate = useNavigate()
 
-        console.log(data);
+    if (token) {
+        return navigate('/')
+    }
+
+    const handleSignUp = (data) => {
         setSignUPError('');
 
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user;
                 console.log(user);
-                
+
                 toast('User Created Successfully.')
                 const userInfo = {
                     displayName: data.name
                 }
                 updateUser(userInfo)
-                    .then(() => { })
-                    .catch(err => console.log(err));
+                    .then(() => {
+                        saveUserInDb(data.name, data.email)
+                    })
+                    .catch(err => console.error(err));
             })
             .catch(error => {
-                console.log(error)
+                console.error(error)
                 setSignUPError(error.message)
             });
     }
+
+    const saveUserInDb = (name, email) => {
+        const user = { name, email }
+        fetch('http://localhost:5000/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                setCreatedUser(email)
+            })
+    }
+
+
 
     return (
         <div className='h-[800px] flex justify-center items-center'>
