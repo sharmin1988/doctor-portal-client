@@ -39,8 +39,7 @@ const MyAppointments = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {
-                                bookings.map((booking, i) => 
+                            { bookings.length && bookings?.map((booking, i) => 
                                     <tr key={booking._id} className="hover">
                                         <th>{i+1}</th>
                                         <td>{booking?.patientName}</td>
