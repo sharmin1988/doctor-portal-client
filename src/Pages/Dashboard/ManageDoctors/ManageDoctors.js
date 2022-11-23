@@ -10,7 +10,7 @@ const ManageDoctors = () => {
     const { data: doctors = [], refetch, isLoading } = useQuery({
         queryKey: ['doctors'],
         queryFn: async () => {
-            const res = await fetch('http://localhost:5000/doctors', {
+            const res = await fetch('https://doctors-portal-server-module-74.vercel.app/doctors', {
                 headers: {
                     authorization: `bearer ${localStorage.getItem('accessToken')}`
                 }
@@ -26,7 +26,7 @@ const ManageDoctors = () => {
     
     const handelDeleteDoctor = doctor => {
         console.log(doctor)
-        fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+        fetch(`https://doctors-portal-server-module-74.vercel.app/doctors/${doctor._id}`, {
                 method: 'DELETE',
                 headers: {
                     authorization: `bearer ${localStorage.getItem('accessToken')}`
@@ -45,7 +45,7 @@ const ManageDoctors = () => {
     // const handelDelete = id => {
     //     const proceed = window.confirm('Are u sure to delete??')
     //     if (proceed) {
-    //         fetch(`http://localhost:5000/doctors/${id}`, {
+    //         fetch(`https://doctors-portal-server-module-74.vercel.app/doctors/${id}`, {
     //             method: 'DELETE'
     //         })
     //             .then(res => res.json())
